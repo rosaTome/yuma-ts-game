@@ -9,8 +9,8 @@ body {
   background-color: rgb(187, 220, 232);
   color: #fafafa;
 }
-
-img {
+body.world-map-background {
+  background-position: center;
   background-size: cover;
   min-height: 100vh;
   position: relative;

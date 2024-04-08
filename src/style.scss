@@ -15,11 +15,13 @@ $color-tertiary: #fafafa;
 body {
     background-color: $color-primary;
     color: $color-tertiary;
+
+    &.world-map-background {
+        background-position: center;
+        background-size: cover;
+        min-height: 100vh;
+        position: relative;
+    }  
 }
 
-img {
-    background-size: cover;
-    min-height: 100vh;
-    position: relative;
-}
 
