@@ -1,2 +1,25 @@
-@use "./variables";
-@use "./reset";
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+$font-family: "Roboto Mono", sans-serif;
+
+$color-primary: rgb(187, 220, 232);
+$color-secondary: rgb(12, 124, 222);
+$color-tertiary: #fafafa;
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: $color-primary;
+    color: $color-tertiary;
+}
+
+img {
+    background-size: cover;
+    min-height: 100vh;
+    position: relative;
+}
+
