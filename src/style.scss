@@ -50,7 +50,7 @@ body {
     background-repeat: no-repeat;
 }  
 
-// HOME
+HOME
             
 .home-container {
     display: grid;
@@ -75,3 +75,23 @@ body {
 
 // GAME
 
+// .game-container {
+//     display: grid;
+//     grid-template-columns: repeat(2, 1fr);
+//     grid-gap: 5em;
+
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     padding-left: 600px;
+// }
+
+// .flag {
+//     display: block;
+//     padding: 20px 250px 20px 250px;
+//     border-radius: 30px;
+//     font-size: 80px;
+//     background-color: $color-primary;
+//     color: $color-tertiary;
+//     border-color: $color-tertiary;
+// }
