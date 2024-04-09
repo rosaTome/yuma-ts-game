@@ -15,39 +15,63 @@ $color-tertiary: #fafafa;
 body {
     background-color: $color-primary;
     color: $color-tertiary;
+    height: 100vh;
+    width: 100vh;
 }
 
-// PSEUDO 
+.quiz-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: $color-primary;
+}
 
-    // NAV
+// NAV
 
 .nav-container {
     display: flex;
     align-items: center;
-    justify-content: center;
 }
 
-.home-button {
-    max-width: 20%;
-    max-height: 20%;
-    margin: 5px 0 0 -150px;
+// .home-button {
+//     max-width: 40%;
+//     max-height: 40%;
+// }
 
+// BACKGROUND 
+
+.world-map-background-container {
+    margin: 30px 0 30px 0;
 }
-
-    // BACKGROUND 
 
 .world-map-background {
-    background-position: center;
     background-size: cover;
-    min-height: 100vh;
-    position: relative;
+    background-position: center;
+    background-repeat: no-repeat;
 }  
 
-    // HOME
+// HOME
+            
+.home-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 5em;
+   
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 600px;
+}
 
-        // GRID TEMPLATE TO ALIGN BUTTONS TO CONTINENT AREA
+.continents {
+    display: block;
+    padding: 20px 250px 20px 250px;
+    border-radius: 30px;
+    font-size: 80px;
+    background-color: $color-primary;
+    color: $color-tertiary;
+    border-color: $color-tertiary;
+}
 
-    // GAME
-
-
+// GAME
 

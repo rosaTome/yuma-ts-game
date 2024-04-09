@@ -11,40 +11,45 @@
 
   <body>
 
-    <!-- NAV -->
-    <header class="nav-container">
-      <!-- <a href="./index.html" 
-      class="home-button"> 
-        <img src="./src/images/home-button.png" alt="home" class="home-button">
-      </a> -->
-      <a href="./index.html" class="home-button"> <!-- re-directs user to HOME -->
-        <img src="./src/images/home-button.png" alt="home" class="home-button">
-      </a>
-      <h1 class="title">Flags around the world quiz!</h1>
-      <div class="score-count"></div>
-    </header>
+    <section class="quiz-container">
 
-    <!-- BACKGROUND -->
-    <img src="./src/images/world-map.png" class="world-map-background"></img>
- 
-    <!-- HOME -->
-    <div class="home-container">
-      <button class="continents" class="africa">Africa</button>
-      <button class="continents" class="asia">Asia</button>
-      <button class="continents" class="europe">Europe</button>
-      <button class="continents" class="north-america">North America</button>
-      <button class="continents" class="south-america">South America</button>
-      <button class="continents" class="oceania">Oceania</button>
-    </div>
+      <!-- NAV -->
+      <header class="nav-container">
+        <!-- <a href="./index.html" 
+        class="home-button"> 
+          <img src="./src/images/home-button.png" alt="home" class="home-button">
+        </a> -->
+        <a href="./index.html" class="home-button"> <!-- re-directs user to HOME -->
+          <!-- <img src="./src/images/home-button.jpg" alt="home" class="home-button"> -->
+        </a>
+        <div class="score-count"></div>
+      </header>
 
-    <!-- GAME -->
-    <div class="game-container">
-      <img class="flag-img" src=""></img>
-      <button class="flag-option__1"></button>
-      <button class="flag-option__2"></button>
-      <button class="flag-option__3"></button>
-      <button class="flag-option__4"></button>
-    </div>
+      <!-- BACKGROUND -->
+      <div class="world-map-background-container">
+        <img src="./src/images/world-map.jpg" class="world-map-background"></img>
+      </div>
+
+      <!-- HOME -->
+      <div class="home-container">
+        <button class="continents africa">Africa</button>
+        <button class="continents asia">Asia</button>
+        <button class="continents europe">Europe</button>
+        <button class="continents north-america">North America</button>
+        <button class="continents south-america">South America</button>
+        <button class="continents oceania">Oceania</button>
+      </div>
+
+      <!-- GAME -->
+      <div class="game-container">
+        <img class="flag-img" src=""></img>
+        <button class="flag-option__1"></button>
+        <button class="flag-option__2"></button>
+        <button class="flag-option__3"></button>
+        <button class="flag-option__4"></button>
+      </div>
+
+    </section>
 
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
