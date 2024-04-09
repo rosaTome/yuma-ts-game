@@ -11,37 +11,37 @@
 
   <body>
 
-    <!-- START -->
-    <div class="start-game-container">
+    <!-- NAV -->
+    <header>
+      <a href="./index.html" 
+      class="home-button"> <!-- re-directs user to HOME -->
+        <img src="./src/images/home-button.png" alt="home">
+      </a>
       <h1>Flags around the world quiz!</h1>
-      <button>Start Game</button>
-    </div>
+      <div class="score-count"></div>
+    </header>
+
+    <!-- BACKGROUND -->
+    <img src="./src/images/world-map.png" class="world-map-background"></img>
  
     <!-- HOME -->
     <div class="home-container">
-      <img src="./src/images/world-map.png" class="world-map-background"></img>
-      <button class="home-button">
-        <img src="./src/images/home-button.png" alt="home">
-      </button>
-      <button class="continents">Africa</button>
-      <button class="continents">Asia</button>
-      <button class="continents">Europe</button>
-      <button class="continents">North America</button>
-      <button class="continents">South America</button>
-      <button class="continents">Oceania</button>
+      <button class="continents" class="africa"></button>
+      <button class="continents" class="asia"></button>
+      <button class="continents" class="europe"></button>
+      <button class="continents" class="north-america"></button>
+      <button class="continents" class="south-america"></button>
+      <button class="continents" class="oceania"></button>
     </div>
 
     <!-- GAME -->
     <div class="game-container">
       <img class="flag-img" src=""></img>
-      <button class="flag-option1"></button>
-      <button class="flag-option2"></button>
-      <button class="flag-option3"></button>
-      <button class="flag-option4"></button>
+      <button class="flag-option__1"></button>
+      <button class="flag-option__2"></button>
+      <button class="flag-option__3"></button>
+      <button class="flag-option__4"></button>
     </div>
-
-    <!-- SCORE COUNT -->
-    <div class="score-count"></div>
 
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
