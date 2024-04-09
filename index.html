@@ -5,19 +5,22 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JS/TS Game</title>
+    <title>JS/TS Game | Flags around the world quiz</title>
     <link rel="stylesheet" href="./src/style.css" class="css">
   </head>
 
   <body>
 
     <!-- NAV -->
-    <header>
-      <a href="./index.html" 
-      class="home-button"> <!-- re-directs user to HOME -->
-        <img src="./src/images/home-button.png" alt="home">
+    <header class="nav-container">
+      <!-- <a href="./index.html" 
+      class="home-button"> 
+        <img src="./src/images/home-button.png" alt="home" class="home-button">
+      </a> -->
+      <a href="./index.html" class="home-button"> <!-- re-directs user to HOME -->
+        <img src="./src/images/home-button.png" alt="home" class="home-button">
       </a>
-      <h1>Flags around the world quiz!</h1>
+      <h1 class="title">Flags around the world quiz!</h1>
       <div class="score-count"></div>
     </header>
 
@@ -26,12 +29,12 @@
  
     <!-- HOME -->
     <div class="home-container">
-      <button class="continents" class="africa"></button>
-      <button class="continents" class="asia"></button>
-      <button class="continents" class="europe"></button>
-      <button class="continents" class="north-america"></button>
-      <button class="continents" class="south-america"></button>
-      <button class="continents" class="oceania"></button>
+      <button class="continents" class="africa">Africa</button>
+      <button class="continents" class="asia">Asia</button>
+      <button class="continents" class="europe">Europe</button>
+      <button class="continents" class="north-america">North America</button>
+      <button class="continents" class="south-america">South America</button>
+      <button class="continents" class="oceania">Oceania</button>
     </div>
 
     <!-- GAME -->
@@ -45,6 +48,5 @@
 
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
-
   </body>
 </html>

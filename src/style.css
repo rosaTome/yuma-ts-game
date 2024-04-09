@@ -9,7 +9,20 @@ body {
   background-color: rgb(187, 220, 232);
   color: #fafafa;
 }
-body.world-map-background {
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-button {
+  max-width: 20%;
+  max-height: 20%;
+  margin: 5px 0 0 -150px;
+}
+
+.world-map-background {
   background-position: center;
   background-size: cover;
   min-height: 100vh;

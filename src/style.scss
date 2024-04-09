@@ -15,13 +15,39 @@ $color-tertiary: #fafafa;
 body {
     background-color: $color-primary;
     color: $color-tertiary;
-
-    &.world-map-background {
-        background-position: center;
-        background-size: cover;
-        min-height: 100vh;
-        position: relative;
-    }  
 }
+
+// PSEUDO 
+
+    // NAV
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-button {
+    max-width: 20%;
+    max-height: 20%;
+    margin: 5px 0 0 -150px;
+
+}
+
+    // BACKGROUND 
+
+.world-map-background {
+    background-position: center;
+    background-size: cover;
+    min-height: 100vh;
+    position: relative;
+}  
+
+    // HOME
+
+        // GRID TEMPLATE TO ALIGN BUTTONS TO CONTINENT AREA
+
+    // GAME
+
 
 
