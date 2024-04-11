@@ -46,23 +46,16 @@ body {
 
 // BACKGROUND 
 
-$duration: 1s;
-.world-map-background-container{
-    animation: runAcrossPage $duration linear infinite;
-    @keyframes runAcrossPage {
-        0% {
-            left: -100%; 
-        }
-        100% {
-            left: 100%;
-        }
-    };
+.world-map-background-containe{
+    margin: 30px 0 30px 0;
+
 };
 
 .world-map-background {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    padding-left: 1050px;
 }  
 
 // HOME
@@ -98,7 +91,7 @@ $duration: 1s;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-left: 600px;
+    padding-left: 900px;
 }
 
 .option {
