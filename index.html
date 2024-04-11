@@ -6,7 +6,6 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JS/TS Game | Flags around the world quiz</title>
-    <link rel="stylesheet" href="./src/style.css" class="css">
   </head>
 
   <body>
@@ -31,7 +30,7 @@
       </div>
 
       <!-- HOME -->
-      <div class="home-container">
+      <div class="home-container" style="display: none;">
         <button class="continents africa">Africa</button>
         <button class="continents asia">Asia</button>
         <button class="continents europe">Europe</button>
@@ -42,12 +41,25 @@
 
       <!-- GAME -->
       <div class="game-container">
-        <img class="flag-img" src=""></img>
-        <button class="flag option__1"></button>
-        <button class="flag option__2"></button>
-        <button class="flag option__3"></button>
-        <button class="flag option__4"></button>
+        <div class="flag-container">
+          <img id="flag" src="" alt="flag"></img>
+        </div>
+
+        <div id="hint">Capital: </div>
+
+        <button class="option" onclick="checkAnswer(this)">Option1</button>
+        <button class="option" onclick="checkAnswer(this)">Option2</button>
+        <button class="option" onclick="checkAnswer(this)">Option3</button>
+        <button class="option" onclick="checkAnswer(this)">Option4</button>
+
+        <!-- Score -->
+        <div id="score">Score: 0</div>
+        <div id="total-flags">Flag: 0 / 0</div>
+
       </div>
+
+      <!-- MESSAGE -->
+      <div class="message"></div>
 
     </section>
 
