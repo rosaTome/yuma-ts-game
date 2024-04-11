@@ -5,6 +5,8 @@ $font-family: "Roboto Mono", sans-serif;
 $color-primary: rgb(187, 220, 232);
 $color-secondary: rgb(12, 124, 222);
 $color-tertiary: #fafafa;
+$color-correct: green;
+$color-incorrect: red;
 
 * {
     padding: 0;
@@ -51,12 +53,15 @@ body {
 
 };
 
+$duration: 5s;
+
 .world-map-background {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     padding-left: 1050px;
-}  
+}
+
 
 // HOME
             
@@ -94,6 +99,38 @@ body {
     padding-left: 900px;
 }
 
+#flag {
+    margin: 0 auto;
+    text-align: center;
+    max-width: 300px;
+    max-height: auto;
+    border: 1px solid $color-tertiary;
+    border-radius: 10px;
+    margin: 10px 0px;
+}
+
+#hint{
+    font-size: 160px;
+    margin: 10px
+}
+
+// SCORE
+
+#score {
+    font-size: 150px;
+    font-weight: bold;
+    margin: 10px 32%;
+    color: $color-tertiary;
+    border-radius: 8px;
+    padding: 2px 0;
+}
+
+#total-flags {
+    font-size: 150px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
 .option {
     display: block;
     padding: 20px 250px 20px 250px;
@@ -102,4 +139,16 @@ body {
     background-color: $color-primary;
     color: $color-tertiary;
     border-color: $color-tertiary;
+}
+
+// MESSAGE 
+
+.message.correct {
+    color: $color-correct;
+    font-weight: bold;
+}
+
+.message.incorrect {
+    color: $color-incorrect;
+    font-weight: bold;
 }
