@@ -217,31 +217,35 @@
 
                     optionsButtons.forEach((button, index) => {
                         button.textContent = options[index];
-                        button.addEventListener("click", () => handleOptionClick(options[index]));
+                        button.addEventListener("click", () => { handleOptionClick(options[index]);
+                        });
                     });
                     updateScoreDisplay();
                 };
 
-                const handleOptionClick = (selectedOption: string) => {
-                    const currentCountry = countriesByContinent[currentCountryIndex];
+                const handleOptionClick = (selectedOption: string | null) => {
+                    if (selectedOption !== null) {
+                        const currentCountry = countriesByContinent[currentCountryIndex];
 
-                    if (selectedOption === currentCountry) {
-                        // correct answer
-                        score++;
-                    }
-                    
-                    // move to the next quiz round 
-                    currentCountryIndex++;
+                        if (selectedOption === currentCountry) {
+                            // correct answer
+                            score++;
+                        }
+                        
+                        // move to the next quiz round 
+                        currentCountryIndex++;
 
-                    if (currentCountryIndex < totalCountries) {
-                        generateQuiz(countriesByContinent[currentCountryIndex]); // generate next quiz round
-                    } else {
-                        // end of quiz
-                        const messageElement = document.querySelector<HTMLDivElement>(".message");
-                        if (messageElement) {
-                            const endMessage = `Quiz completed. Score: ${score}/${totalCountries}`;
-                            messageElement.textContent = endMessage;
+                        if (currentCountryIndex < totalCountries) {
+                            generateQuiz(countriesByContinent[currentCountryIndex]); // generate next quiz round
+                        } else {
+                            // end of quiz
+                            const messageElement = document.querySelector<HTMLDivElement>(".message");
+                            if (messageElement) {
+                                const endMessage = `Quiz completed. Score: ${score}/${totalCountries}`;
+                                messageElement.textContent = endMessage;
+                            };
                         };
+
                     };
 
                     // update the display of the score
@@ -279,4 +283,16 @@
                             };
                         });
                     });
+                });
+
+                // event listeners for option buttons
+                document.addEventListener("DOMContentLoaded", () => {
+                    const optionsButtons = document.querySelectorAll<HTMLButtonElement>(".option");
+                    optionsButtons.forEach((button) => {
+                        button.addEventListener("click", () => {
+                            const selectedOption = button.textContent;
+                            handleOptionClick(selectedOption);
+                        });
+                    });
+                    
                 });
