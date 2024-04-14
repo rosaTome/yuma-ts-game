@@ -57,7 +57,7 @@
                         };
 
                         // initialise the quiz with countries for the selected continent
-                        initialiseQuizContinents(countriesByContinent);
+                        initialiseQuizContinents(countriesByContinent, continent);
 
                         console.log(`QUIZ INITIATION - Countries in ${continent}:`, countriesByContinent);
                         
@@ -97,7 +97,7 @@
                 };
 
                   
-            // flag img must match ✅
+            // function to fetch flag data for all countries
                 // get flags
                 const fetchFlagData = async (): Promise<FlagsResponse> => {
                     try {
@@ -134,8 +134,6 @@
 
                         // update the flag image in the html 
                         const flagImageElement = document.querySelector<HTMLImageElement>("#flag");
-                        flagImageElement.src = flagImageUrl;
-                        flagImageElement.alt = currentCountryFlag.flags.alt;
 
                         if (flagImageElement) {
                             flagImageElement.src = flagImageUrl;
@@ -144,7 +142,7 @@
 
                         // generate option for the current country
                         const options = generateOptions(currentCountry, totalCountries);
-                        displyOptions(options);
+                        displayOptions(options);
 
                     } catch (error) {
                         console.error("Error displaying country quiz:", error);
@@ -168,7 +166,7 @@
                     return shuffleArray(options);
                 };
 
-                // shuffle nan array (Fisher-Yates shuffle algorithm)
+                // (Fisher-Yates shuffle algorithm)
                 const shuffleArray = <T>(array: T[]): T[] => {
                     const shuffleArray = [...array];
                     for (let i = shuffleArray.length - 1; i > 0; i--) {
@@ -178,11 +176,22 @@
                     return shuffleArray;
                 };
 
+                // function to generate and display a quiz round for a specific country
+                const generateQuiz = async (country: string) => {
+
+                    try {
+                        await displayCountryQuiz(country);
+                        updateScoreDisplay();
+                    } catch (error) {
+                        console.error("Error generating quiz", error);
+                    }
+                };
+
                 // Function to display options on the screen 
                 const displayOptions = (options: string[]) => {
                     const optionsButtons = document.querySelectorAll<HTMLButtonElement>(".option");
 
-                    if (optionButtons.length !== options.length) {
+                    if (optionsButtons.length !== options.length) {
                         throw new Error("Number of option buttons does not match the number of options.");
                     }
 
