@@ -57,7 +57,7 @@
                         };
 
                         // initialise the quiz with countries for the selected continent
-                        initialiseQuizContinents(countriesByContinent, continent);
+                        initialiseQuizContinents(countriesByContinent);
 
                         console.log(`QUIZ INITIATION - Countries in ${continent}:`, countriesByContinent);
                         
@@ -69,7 +69,7 @@
                 // link continent button to continent object ✅
 
                 // function to initialise quiz with country data 
-                const initialiseQuizContinents = (countries: string[], continent: string) => {
+                const initialiseQuizContinents = (countries: string[]) => {
 
                     // ensure countries array is not empty - 
                    if (!countries || countries.length === 0) {
@@ -99,20 +99,24 @@
                   
             // function to fetch flag data for all countries
                 // get flags
-                const fetchFlagData = async (): Promise<FlagsResponse> => {
+                const fetchFlagData = async (): Promise<FlagsResponse[]> => {
                     try {
 
                         // make the response
                         const response = await fetch("https://restcountries.com/v3.1/all");
 
+                        if (!response.ok) {
+                            throw new Error("Failed to fetch flag data");
+                        }
+
                         // access the data 
-                        const flagsData: FlagsResponse = await response.json();
+                        const flagsData: FlagsResponse[] = await response.json();
 
                         return flagsData;
 
                     } catch (error) {
-                        console.error("Error fetching or flag data:", error);
-                        return []; 
+                        console.error("Error fetching flag data:", error);
+                        throw error;
                     };
                 };
 
@@ -123,7 +127,11 @@
                         // fetch flag data for all countries 
                         const flagsData = await fetchFlagData();
 
-                        const currentCountryFlag = flagsData.find(country => country.flags.alt === currentCountry);
+                        // Ensure flagsData is an array
+                        if (!Array.isArray(flagsData)) {
+                            throw new Error("Invalid flag data format");
+        }
+                        const currentCountryFlag = flagsData.find((country) => country.name.common === currentCountry);
 
                         if (!currentCountryFlag) {
                             throw new Error("Flag data not found for the current country");
@@ -137,11 +145,11 @@
 
                         if (flagImageElement) {
                             flagImageElement.src = flagImageUrl;
-                            flagImageElement.alt = currentCountryFlag.flags.alt;
+                            flagImageElement.alt = currentCountry;
                         }
 
                         // generate option for the current country
-                        const options = generateOptions(currentCountry, totalCountries);
+                        const options = generateOptions(currentCountry, flagsData.length);
                         displayOptions(options);
 
                     } catch (error) {
@@ -241,36 +249,22 @@
                     const continentButtons = document.querySelectorAll(".continents");
                     continentButtons.forEach((button) => {
                         button.addEventListener("click", (event) => {
-                            const selectedContinent= event.target.textContent;
-                            if(selectedContinent){
+
+                            // Check if event.target is an HTMLButtonElement
+                            if (event.target instanceof HTMLButtonElement){
+
+                            const selectedContinent = event.target.textContent;
+
+                            if(selectedContinent) {
                                 startContinentQuiz(selectedContinent);
 
                             } else {
                                 console.error("Issue with continent button");
                             }
+                        } else {
+
+                            console.error("Event target is not a button element");
+                            };
                         });
-
-
                     });
                 });
-                 
-                
-// EVENT LISTENERS 
-
-// bin:
-
- 
-                // const generateQuiz = () => {
-                //     try {
-                    
-                //         totalCountries = countriesByContinent.length;
-                //         currentCountryIndex = 0;
-
-                //         // display quiz for the first country 
-                //         displayCountryQuiz();
-
-                //     } catch(error) {
-                //         console.error("Error generating quiz", error);       
-                //     };
-                // };
-            
