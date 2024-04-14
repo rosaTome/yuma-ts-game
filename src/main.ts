@@ -161,14 +161,26 @@
                 const generateOptions = (currentCountry: string, totalCountries: number): string [] => {
                     const options: string[] = [currentCountry]; //to include correct option
 
+                    // Ensure we can generate three unique incorrect options
+                    if (totalCountries <= 1) {
+                        throw new Error("Insufficient countries to generate options");
+                    };
+
                     // generate three random incorrect options from the list of all countries 
                     while (options.length < 4) {
                         const randomIndex = Math.floor(Math.random() * totalCountries);
-                        const randomCountry = countriesByContinent[randomIndex];  
-                        if (!options.includes(randomCountry) && randomCountry !== currentCountry) {
-                            options.push(randomCountry);
-                        }
-                    }
+
+                        if (randomIndex >= 0 && randomIndex < totalCountries && countriesByContinent[randomIndex]) {
+                            const randomCountry = countriesByContinent[randomIndex];
+
+
+                            if (!options.includes(randomCountry) && randomCountry !== currentCountry) {
+                                options.push(randomCountry);
+                            };
+                        };
+                    };
+
+                    console.log("Generated options:", options);
 
                     // shuffle the options array to randomise order
                     return shuffleArray(options);
@@ -192,7 +204,7 @@
                         updateScoreDisplay();
                     } catch (error) {
                         console.error("Error generating quiz", error);
-                    }
+                    };
                 };
 
                 // Function to display options on the screen 
