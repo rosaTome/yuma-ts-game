@@ -45,47 +45,13 @@
                         return[]; 
                     };
                 };
-            
-            
-            // link continent button to continent object ✅
-
-                // function to initialise quiz with country data 
-                const initialiseQuizContinents = (countries: string[]) => {
-
-                    // ensure countries array is not empty - 
-                   if (!countries || countries.length === 0) {
-                       throw new Error("No countries available for the selected continent")
-                   };
-
-                   // pick a random country from the provided array of countries 
-                   const randomIndex = Math.floor(Math.random() * countries.length);
-                   const randomCountry : string = countries[randomIndex];
-
-                   // hide continent buttons
-                   const homeContainer : any = document.querySelector<HTMLDivElement>(".home-container");
-                   homeContainer.style.display = "none";
-
-                   if(!homeContainer){
-                       throw new Error ("Issue with selectors: home-container not found");
-                   };
-
-                   // show game container
-                   const gameContainer : any = document.querySelector<HTMLDivElement>(".game-container")
-                   gameContainer.style.display = "flex";
-
-                   if(!gameContainer){
-                       throw new Error ("Issue with selectors: game-container not found");
-                   };
-
-                   generateQuiz(randomCountry);
-               };
 
                 // function to start quiz for a specific continent
                 const startContinentQuiz = async (continent: string) => {
                     try {
-                        const countriesData = await fetchContinentsData();
+                        const continentsData = await fetchContinentsData();
 
-                        const countriesByContinent = getCountriesByContinent(continentsData, continent);
+                        countriesByContinent = getCountriesByContinent(continentsData, continent);
                         if (!countriesByContinent || countriesByContinent.length === 0) {
                             throw new Error("No countries available for the selected continent");
                         };
@@ -99,26 +65,38 @@
                         console.error("Error starting continent quiz:", error);
                     };
                 };
-                    
-                // event listeners for continent buttons
-                document.addEventListener("DOMContentLoaded", () => {
-                    const continentButtons = document.querySelectorAll(".continents");
-                    continentButtons.forEach((button) => {
-                        button.addEventListener("click", (event) => {
-                            const selectedContinent= event.target.textContent;
-                            if(!selectedContinent){
-                                startContinentQuiz(selectedContinent);
 
-                            } else {
-                                console.error("Issue with continent button text content");
-                            }
-                        });
+                // link continent button to continent object ✅
 
+                // function to initialise quiz with country data 
+                const initialiseQuizContinents = (countries: string[], continent: string) => {
 
-                    });
-                });
-                 
-        // Quiz        
+                    // ensure countries array is not empty - 
+                   if (!countries || countries.length === 0) {
+                       throw new Error("No countries available for the selected continent")
+                   };
+
+                   // pick a random country from the provided array of countries 
+                   const randomIndex = Math.floor(Math.random() * countries.length);
+
+                   const randomCountry : string = countries[randomIndex];
+
+                   // hide continent buttons
+                   const homeContainer : any = document.querySelector<HTMLDivElement>(".home-container");
+
+                    // show game container
+                    const gameContainer : any = document.querySelector<HTMLDivElement>(".game-container");
+
+                    if (homeContainer && gameContainer) {
+                        homeContainer.style.display = "none";
+                        gameContainer.style.display = "flex";
+                        generateQuiz(randomCountry);
+                    } else {
+                        throw new Error("Issue with selectors: home-container or game-container not found");
+                    };
+                };
+
+                  
             // flag img must match ✅
                 // get flags
                 const fetchFlagData = async (): Promise<FlagsResponse> => {
@@ -138,39 +116,8 @@
                     };
                 };
 
-            // function to generate quiz for a specific country
-                // COUNTRIES NEEDS TO COME FROM LIST - countriesByContinent array
-                const generateQuiz = async (continent: string) => {
-                    try {
-                        // fetch continents data
-                        const continentsData = await fetchContinentsData();
-
-                        // get countries for the specified continent 
-                        const countriesByContinent = getCountriesByContinent(continentsData, continent);
-
-                        if (!countriesByContinent || countriesByContinent.length === 0) {
-                            throw new Error("No countries available for quiz.");
-                        }
-
-                        const totalCountries = countriesByContinent.length;
-
-                        // randomly select a country from the countriesByContinent array
-                        const randomIndex = Math.floor(Math.random() * totalCountries);
-                        const currentCountry = countriesByContinent[randomIndex];
-
-                        // log current country for the quiz round
-                        console.log(`Round ${currentCountryIndex + 1}: ${currentCountry}`);
-
-                        // call the function to display the flag and options for the current country
-                        await displayCountryQuiz(currentCountry, totalCountries);
-
-                    } catch(error) {
-                        console.error("Error generating quiz", error);       
-                    };
-                };
-
-                // flag img 
-                const displayCountryQuiz = async (currentCountry: string, totalCountries: number) => {
+                // function to generate quiz for a specific country
+                const displayCountryQuiz = async (currentCountry: string) => {
                     try {
 
                         // fetch flag data for all countries 
@@ -203,9 +150,8 @@
                         console.error("Error displaying country quiz:", error);
                     }  
                 };
-                    
-                    // generate .option buttons with 3 random incorrect labels and 1 correct label matching the nominated country name from countriesByContinent object 
 
+                // generate .option buttons with 3 random incorrect labels and 1 correct label matching the nominated country name from countriesByContinent object 
                 const generateOptions = (currentCountry: string, totalCountries: number): string [] => {
                     const options: string[] = [currentCountry]; //to include correct option
 
@@ -248,16 +194,18 @@
                 };
 
                 const handleOptionClick = (selectedOption: string) => {
-                    const currentCountry = countriesByContinent[currentCountryIndex - 1];
+                    const currentCountry = countriesByContinent[currentCountryIndex];
 
                     if (selectedOption === currentCountry) {
                         // correct answer
                         score++;
                     }
+                    
+                    // move to the next quiz round 
+                    currentCountryIndex++;
 
-                     // move to the next quiz round if available
                     if (currentCountryIndex < totalCountries) {
-                        generateQuiz(countriesByContinent);
+                        generateQuiz(countriesByContinent[currentCountryIndex]); // generate next quiz round
                     } else {
                         // end of quiz
                         const messageElement = document.querySelector<HTMLDivElement>(".message");
@@ -271,6 +219,7 @@
                     updateScoreDisplay();
                 };
                 
+                // function to update the score display on the page
                 const updateScoreDisplay = () => {
                     const scoreElement = document.querySelector<HTMLDivElement>("#score");
                     if (scoreElement) {
@@ -278,18 +227,41 @@
                     };
                 };
 
+                // event listeners for continent buttons
                 document.addEventListener("DOMContentLoaded", () => {
                     const continentButtons = document.querySelectorAll(".continents");
                     continentButtons.forEach((button) => {
                         button.addEventListener("click", (event) => {
-                            const selectedContinent = event.target.textContent;
-                            if (selectedContinent) {
-                                generateQuiz(selectedContinent);
+                            const selectedContinent= event.target.textContent;
+                            if(selectedContinent){
+                                startContinentQuiz(selectedContinent);
+
                             } else {
-                                throw new Error("Issue with continent button text content.");
+                                console.error("Issue with continent button");
                             }
                         });
+
+
                     });
                 });
+                 
                 
 // EVENT LISTENERS 
+
+// bin:
+
+ 
+                // const generateQuiz = () => {
+                //     try {
+                    
+                //         totalCountries = countriesByContinent.length;
+                //         currentCountryIndex = 0;
+
+                //         // display quiz for the first country 
+                //         displayCountryQuiz();
+
+                //     } catch(error) {
+                //         console.error("Error generating quiz", error);       
+                //     };
+                // };
+            
