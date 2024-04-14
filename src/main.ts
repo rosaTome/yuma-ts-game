@@ -9,7 +9,7 @@
     import { ContinentsResponse } from "../types/continents";
 
     // import the continents response objects 
-    import { africaFlags, americaFlags, asiaFlags, europeFlags, oceaniaFlags } from "../objects/continents-objects";
+    import { getCountriesByContinent } from "../objects/continents-objects";
 
 // QUERYSELECTORS
 
@@ -28,17 +28,71 @@
             // link  continent button to continent object
             // countries must generate randomly
                 // get continents
-                // const getQuote = async () => {
+                const fetchContinentsData = async (): Promise<ContinentsResponse> => {
+                    try {
 
-                //     // make the response
-                //     const response = await fetch("");
+                        // make the response
+                        const response = await fetch("https://restcountries.com/v3.1/all");
 
-                //     // access the data 
-                //     const data: QuoteResponse = await response.json();
+                        // access the data 
+                        const continentsData: ContinentsResponse = await response.json();
 
-                //     // add the continents to the html
-                //     quoteContainer.innerHTML = data.content;
-                // }
+                        return continentsData;
+
+                        // add the continents to the html
+                        // quoteContainer.innerHTML = data.content;
+
+                    } catch (error) {
+                        console.error("Error fetching or processing data:", error);
+                        return[]; 
+                    };
+                };
+
+                // fetch continent data and process countries for a specific continent 
+                fetchContinentsData().then((continentsData) => {
+                    // specify continent to filter 
+                    const africaContinentToFilter = "Africa";
+
+                     const americaContinentToFilter = "Americas";
+    
+                     const asiaContinentToFilter = "Asia";
+    
+                     const europeContinentToFilter = "Europe";
+    
+                     const oceaniaContinentToFilter = "Oceania";
+    
+                    // Get country names for the specific continent 
+                    const africaCountriesInContinent = getCountriesByContinent(continentsData, africaContinentToFilter);
+
+                     const americaCountriesInContinent = getCountriesByContinent(continentsData, americaContinentToFilter)
+
+                     const asiaCountriesInContinent = getCountriesByContinent(continentsData, asiaContinentToFilter)
+
+                     const europeCountriesInContinent = getCountriesByContinent(continentsData, europeContinentToFilter)
+
+                     const oceaniaCountriesInContinent = getCountriesByContinent(continentsData, oceaniaContinentToFilter)
+
+                    //  log retrieved country names by continent
+                    console.log(`Countries in ${africaContinentToFilter}: `, africaCountriesInContinent);
+
+                    console.log(`Countries in ${americaContinentToFilter}: `, americaCountriesInContinent);
+
+                    console.log(`Countries in ${asiaContinentToFilter}: `, asiaCountriesInContinent);
+
+
+                    console.log(`Countries in ${europeContinentToFilter}: `, europeCountriesInContinent);
+
+                    console.log(`Countries in ${oceaniaContinentToFilter}: `, oceaniaCountriesInContinent);
+
+                    // log each country name individually 
+                    // africaCountriesInContinent.forEach((country) => {
+                    //     console.log(country);
+                        
+                    // });
+                });
+
+               
+
 
         // Flags
             // display flag for each country
