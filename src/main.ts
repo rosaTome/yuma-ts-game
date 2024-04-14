@@ -20,7 +20,7 @@
     // tracking game progress 
     let currentCountryIndex = 0;
     let score = 0;
-    let totalCountries: 0;
+    let totalCountries: number = 0;
     let countriesByContinent: string[] = [];
 
 // FUNCTIONS
@@ -75,6 +75,9 @@
                    if (!countries || countries.length === 0) {
                        throw new Error("No countries available for the selected continent")
                    };
+
+                   // set the total number of quiz rounds
+                   totalCountries = countries.length;
 
                    // pick a random country from the provided array of countries 
                    const randomIndex = Math.floor(Math.random() * countries.length);
@@ -200,12 +203,36 @@
                 const generateQuiz = async (country: string) => {
 
                     try {
+                        console.log("generateQuiz - currentCountryIndex:", currentCountryIndex);
+                        console.log("generateQuiz - totalCountries:", totalCountries);
+
                         await displayCountryQuiz(country);
                         updateScoreDisplay();
-                    } catch (error) {
-                        console.error("Error generating quiz", error);
-                    };
-                };
+                    
+                        } catch (error) {
+                            console.error("Error generating quiz", error);
+                        }
+                    }
+                    
+                    // REST OF GENERATE QUIZ FUNCTION - CUT OFF DUE TO BUG - move to the next quiz round 
+                    //     currentCountryIndex++
+                    //     if (currentCountryIndex < totalCountries) {
+                    //         const nextCountry = countriesByContinent[currentCountryIndex];
+                    //         generateQuiz(nextCountry);
+
+                    //     } else {
+                    //         // end of quiz
+                    //         const messageElement = document.querySelector<HTMLDivElement>(".message");
+                    //         if (messageElement) {
+                    //             const endMessage = `Quiz completed. Score: ${score}/${totalCountries}`;
+                    //             messageElement.textContent = endMessage;
+                    //         }
+                        
+                    //     } catch (error) {
+                    //         console.error("Error generating quiz", error);
+                    //    };
+                    
+            
 
                 // Function to display options on the screen 
                 const displayOptions = (options: string[]) => {
@@ -222,43 +249,7 @@
                     });
                     updateScoreDisplay();
                 };
-
-                const handleOptionClick = (selectedOption: string | null) => {
-                    if (selectedOption !== null) {
-                        const currentCountry = countriesByContinent[currentCountryIndex];
-
-                        if (selectedOption === currentCountry) {
-                            // correct answer
-                            score++;
-                        }
-                        
-                        // move to the next quiz round 
-                        currentCountryIndex++;
-
-                        if (currentCountryIndex < totalCountries) {
-                            generateQuiz(countriesByContinent[currentCountryIndex]); // generate next quiz round
-                        } else {
-                            // end of quiz
-                            const messageElement = document.querySelector<HTMLDivElement>(".message");
-                            if (messageElement) {
-                                const endMessage = `Quiz completed. Score: ${score}/${totalCountries}`;
-                                messageElement.textContent = endMessage;
-                            };
-                        };
-
-                    };
-
-                    // update the display of the score
-                    updateScoreDisplay();
-                };
                 
-                // function to update the score display on the page
-                const updateScoreDisplay = () => {
-                    const scoreElement = document.querySelector<HTMLDivElement>("#score");
-                    if (scoreElement) {
-                        scoreElement.textContent = `Score: ${score}/${totalCountries}`;
-                    };
-                };
 
                 // event listeners for continent buttons
                 document.addEventListener("DOMContentLoaded", () => {
@@ -283,16 +274,66 @@
                             };
                         });
                     });
-                });
 
+                });
+                
                 // event listeners for option buttons
                 document.addEventListener("DOMContentLoaded", () => {
                     const optionsButtons = document.querySelectorAll<HTMLButtonElement>(".option");
+                
                     optionsButtons.forEach((button) => {
                         button.addEventListener("click", () => {
                             const selectedOption = button.textContent;
                             handleOptionClick(selectedOption);
                         });
                     });
-                    
                 });
+
+                const handleOptionClick = (selectedOption: string | null) => {
+                    console.log("Handling Option Click:", selectedOption); // check the selected option
+
+                    console.log("handleOptionClick - currentCountryIndex:", currentCountryIndex);
+                    console.log("handleOptionClick - totalCountries:", totalCountries);
+
+                    if (selectedOption !== null && selectedOption !== undefined) {
+                        const currentCountry = countriesByContinent[currentCountryIndex];
+
+                        if (selectedOption === currentCountry) {
+                            // correct answer
+                            score++;
+                        } 
+                        
+                        // move to the next quiz round 
+                        currentCountryIndex++;
+
+                        if (currentCountryIndex < totalCountries) {
+
+                            // generate next quiz round
+                            const nextCountry = countriesByContinent[currentCountryIndex];
+                            generateQuiz(nextCountry); // generate next quiz round
+
+                        } else {
+                            // end of quiz
+                            const messageElement = document.querySelector<HTMLDivElement>(".message");
+                            if (messageElement) {
+                                const endMessage = `Quiz completed. Score: ${score}/${totalCountries}`;
+                                messageElement.textContent = endMessage;
+                            };
+                        };
+
+                        // update the display of the score
+                        updateScoreDisplay();
+                    } else {
+                        console.error("Invalid selected option:", selectedOption);
+                    }
+                };
+
+                // function to update the score display on the page
+                const updateScoreDisplay = () => {
+                    const scoreElement = document.querySelector<HTMLDivElement>("#score");
+                    if (scoreElement) {
+                        scoreElement.textContent = `Score: ${score}/${totalCountries}`;
+                    } else {
+                        console.error("Score element not found");
+                    }
+                };
