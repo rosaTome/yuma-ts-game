@@ -14,6 +14,7 @@
 // QUERYSELECTORS
 
 // NULL CHECKS
+    // find "error" "catch" 
 
 // VARIABLES 
     // tracking game progress 
@@ -25,8 +26,7 @@
     // functions - calling APIs
         
         // Continents 
-            // link  continent button to continent object
-            // countries must generate randomly
+            // filter countries by continent ✅
                 // get continents
                 const fetchContinentsData = async (): Promise<ContinentsResponse> => {
                     try {
@@ -52,36 +52,23 @@
                 fetchContinentsData().then((continentsData) => {
                     // specify continent to filter 
                     const africaContinentToFilter = "Africa";
-
-                     const americaContinentToFilter = "Americas";
-    
-                     const asiaContinentToFilter = "Asia";
-    
-                     const europeContinentToFilter = "Europe";
-    
-                     const oceaniaContinentToFilter = "Oceania";
+                    const americaContinentToFilter = "Americas";
+                    const asiaContinentToFilter = "Asia";
+                    const europeContinentToFilter = "Europe";
+                    const oceaniaContinentToFilter = "Oceania";
     
                     // Get country names for the specific continent 
                     const africaCountriesInContinent = getCountriesByContinent(continentsData, africaContinentToFilter);
+                    const americaCountriesInContinent = getCountriesByContinent(continentsData, americaContinentToFilter)
+                    const asiaCountriesInContinent = getCountriesByContinent(continentsData, asiaContinentToFilter)
+                    const europeCountriesInContinent = getCountriesByContinent(continentsData, europeContinentToFilter)
+                    const oceaniaCountriesInContinent = getCountriesByContinent(continentsData, oceaniaContinentToFilter)
 
-                     const americaCountriesInContinent = getCountriesByContinent(continentsData, americaContinentToFilter)
-
-                     const asiaCountriesInContinent = getCountriesByContinent(continentsData, asiaContinentToFilter)
-
-                     const europeCountriesInContinent = getCountriesByContinent(continentsData, europeContinentToFilter)
-
-                     const oceaniaCountriesInContinent = getCountriesByContinent(continentsData, oceaniaContinentToFilter)
-
-                    //  log retrieved country names by continent
+                    // logs - retrieves countries by continent
                     console.log(`Countries in ${africaContinentToFilter}: `, africaCountriesInContinent);
-
                     console.log(`Countries in ${americaContinentToFilter}: `, americaCountriesInContinent);
-
                     console.log(`Countries in ${asiaContinentToFilter}: `, asiaCountriesInContinent);
-
-
                     console.log(`Countries in ${europeContinentToFilter}: `, europeCountriesInContinent);
-
                     console.log(`Countries in ${oceaniaContinentToFilter}: `, oceaniaCountriesInContinent);
 
                     // log each country name individually 
@@ -91,9 +78,66 @@
                     // });
                 });
 
+            // function to start quiz for a specific continent
+                const startContinentQuiz = (continent: string) => {
+                    fetchContinentsData().then((continentsData) => {
+                        const allCountriesByContinent = getCountriesByContinent(continentsData, continent)
+
+                        initialiseQuiz(allCountriesByContinent)
+
+                        console.log(`QUIZ INITIATION - Countries in ${continent}:`, allCountriesByContinent);
+    
+                    });
+                };
+            
+            // link  continent button to continent object ✅
+                // function to initialise quiz with country data 
+                    const initialiseQuiz = (countries: string[]) => {
+
+                        // hide continent buttons
+                        const homeContainer = document.querySelector<HTMLDivElement>(".home-container");
+                        homeContainer.style.display = "none";
+
+                        if(!homeContainer){
+                            throw new Error ("Issue with selectors");
+                        };
+
+                        // show game container
+                        const gameContainer = document.querySelector<HTMLDivElement>(".game-container")
+                        gameContainer.style.display = "flex";
+
+                        if(!gameContainer){
+                            throw new Error ("Issue with selectors");
+                        };
+
+                        generateQuiz(countries);
+                    };
+
+                // function to generate quiz
+                    const generateQuiz = (countries: string[]) => {
+
+                        // QUIZ LOGIC
+                            // 
+
+                    };
+                
+                // event listeners for continent buttons
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const continentButtons = document.querySelectorAll(".continents");
+                        continentButtons.forEach((button) => {
+                            button.addEventListener("click", (event) => {
+                                const selectedContinent = event.target.textContent;
+                                startContinentQuiz(selectedContinent);
+
+                                if(!event.target || !textContent){
+                                    throw new Error ("Issue with selectors");
+                                };
+                            });
+                        });
+                    });
+                
+
                
-
-
         // Flags
             // display flag for each country
                 // get name
