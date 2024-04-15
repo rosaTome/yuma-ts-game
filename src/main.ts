@@ -60,8 +60,7 @@
                         totalCountries = countriesByContinent.length;
                         currentCountryIndex = 0;
 
-                        // initialise the quiz with countries for the selected continent
-                        initialiseQuizContinents(countriesByContinent);
+                        await generateQuiz(countriesByContinent[currentCountryIndex]);
 
                         console.log(`1. Troubleshooting - Countries in ${continent}:`, countriesByContinent);
                         
