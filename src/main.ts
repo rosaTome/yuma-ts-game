@@ -63,7 +63,7 @@
                         // initialise the quiz with countries for the selected continent
                         initialiseQuizContinents(countriesByContinent);
 
-                        console.log(`1. Troubleshooting - Countries in ${continent}:`, countriesByContinent);
+                        console.log(`1. startContinentQuiz Troubleshooting - Countries in ${continent}:`, countriesByContinent);
                         
                     } catch (error) {
                         console.error("Error starting continent quiz:", error);
@@ -183,10 +183,10 @@
                     const correctAnswer = currentCountry;
                     const incorrectAnswers = options.filter(option => option !== correctAnswer);
 
-                    console.log("2. Troubleshooting - Nominated Country:", currentCountry);
-                    console.log("3. Troubleshooting - Options Generated:", options);
-                    console.log("4.Troubleshooting - Incorrect Answers:", incorrectAnswers);
-                    console.log("5. Troubleshooting - Correct Answer:", correctAnswer);
+                    console.log("2. generateOptions Troubleshooting - Nominated Country:", currentCountry);
+                    console.log("3. generateOptions Troubleshooting - Options Generated:", options);
+                    console.log("4. generateOptions Troubleshooting - Incorrect Answers:", incorrectAnswers);
+                    console.log("5. generateOptions Troubleshooting - Correct Answer:", correctAnswer);
                    
                     // Add the correct country as an option
                     options.push(currentCountry);
@@ -278,39 +278,37 @@
                 };
 
                 const handleOptionClick = async (event: MouseEvent, selectedOption: string) => {
-                    // Access properties of the event object if needed
                     const targetElement = event.target as HTMLButtonElement;
-                    console.log("6. Troubleshooting - Clicked option:", selectedOption);
-
-                    // Prevent multiple clicks by disabling the button
+                    
+                    // Disable the button to prevent multiple clicks
                     targetElement.disabled = true;
-
+                
                     // Get the current country for this quiz round
                     const currentCountry = countriesByContinent[currentCountryIndex];
-
-                    // Log the current country for debugging
-                    console.log("7. Troubleshooting - Confirmiation of Current Country:", currentCountry);
-
-                    // standard both selectedOption and currentCountry for comparison
+                    
+                    // Log the clicked option and current country for troubleshooting
+                    console.log("6. handleOptionClick Troubleshooting - Clicked option:", selectedOption);
+                    console.log("7. handleOptionClick Troubleshooting - Confirmation of Current Country:", currentCountry);
+                    
+                    // Normalize selected option and current country for comparison
                     const normalisedSelectedOption = selectedOption.trim().toLowerCase();
                     const normalisedCurrentCountry = currentCountry.trim().toLowerCase();
-
-                    // Log the normalised values for debugging
-                    console.log("8a. Troubleshoopting Normalised Selected Option:", normalisedSelectedOption);
-                    console.log("8b. Troubleshoopting Normalised Current Country:", normalisedCurrentCountry);
-
-                    // Check if  selectedOption matches the normalised currentCountry
-                    if (normalisedCurrentCountry === normalisedSelectedOption) {
-                        score++;
-                        console.log("9a. Troubleshooting  CORRECT! Score added");
+                    
+                    // Log the normalized values for debugging
+                    console.log("8a. handleOptionClick Troubleshooting Normalised Selected Option:", normalisedSelectedOption);
+                    console.log("8b. handleOptionClick Troubleshooting Normalised Current Country:", normalisedCurrentCountry);
+                    
+                    // Check if the selected option matches the nominated current country
+                    if (normalisedSelectedOption === normalisedCurrentCountry) {
+                        score++; // Increment score for correct answer
+                        console.log("9a. handleOptionClick Troubleshooting - CORRECT! Score added");
                     } else {
-                        // Handle incorrect answer logic
-                        console.log("9b. Troubleshooting  INCORRECT! Score stays the same");
+                        console.log("9b. handleOptionClick Troubleshooting - INCORRECT! Score stays the same");
                     }
-                
+                    
                     // Update the display of the score
                     updateScoreDisplay();
-                
+                    
                     // Move to the next quiz round if applicable
                     currentCountryIndex++;
                     if (currentCountryIndex < totalCountries) {
