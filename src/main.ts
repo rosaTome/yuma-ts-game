@@ -60,7 +60,8 @@
                         totalCountries = countriesByContinent.length;
                         currentCountryIndex = 0;
 
-                        await generateQuiz(countriesByContinent[currentCountryIndex]);
+                        // initialise the quiz with countries for the selected continent
+                        initialiseQuizContinents(countriesByContinent);
 
                         console.log(`1. Troubleshooting - Countries in ${continent}:`, countriesByContinent);
                         
@@ -216,25 +217,23 @@
                         await displayCountryQuiz(country);
                     } catch (error) {
                         console.error("Error generating quiz", error);
-                    };
+                    }
                 };
                     
                 // Function to display options on the screen 
                 const displayOptions = (options: string[]) => {
                     const optionsButtons = document.querySelectorAll<HTMLButtonElement>(".option");
-                
-                    if (optionsButtons.length !== options.length) {
-                        throw new Error("Number of option buttons does not match the number of options.");
-                    }
-                
-                    // Attach event listener to each option button
                     optionsButtons.forEach((button, index) => {
                         button.textContent = options[index];
+                        button.disabled = false;
+
+                        // Remove existing event listeners before adding new ones
+                        button.removeEventListener("click", handleOptionClick);
                         button.addEventListener("click", (event) => {
-                            handleOptionClick(event, options[index]); // Pass the event and selected option
+                            handleOptionClick(event, options[index]);
+                            button.disabled = true; // Disable button after click
                         });
                     });
-                
                     updateScoreDisplay();
                 };
 
@@ -286,13 +285,19 @@
                     // Access properties of the event object if needed
                     const targetElement = event.target as HTMLButtonElement;
                     console.log("6. Troubleshooting - Clicked country:", targetElement);
+
+                    // Prevent multiple clicks by disabling the button
+                    targetElement.disabled = true;
                 
                     // Your logic here using the selectedOption parameter
                     const currentCountry = countriesByContinent[currentCountryIndex];
                     if (currentCountry && selectedOption === currentCountry) {
                         score++;
+                        console.log("Troubleshooting 7a - CORRECT! Score added");
+                        
                     } else {
                         // Handle incorrect answer logic
+                        console.log("Troubleshooting 7b. - INCORRECT!");
                     }
                 
                     // Update the display of the score
