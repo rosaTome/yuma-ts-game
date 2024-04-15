@@ -63,7 +63,7 @@
                         // initialise the quiz with countries for the selected continent
                         initialiseQuizContinents(countriesByContinent);
 
-                        console.log(`startContinentQuiz - Countries in ${continent}:`, countriesByContinent);
+                        console.log(`1. Troubleshooting - Countries in ${continent}:`, countriesByContinent);
                         
                     } catch (error) {
                         console.error("Error starting continent quiz:", error);
@@ -192,10 +192,10 @@
                     const correctAnswer = currentCountry;
                     const incorrectAnswers = options.filter(option => option !== correctAnswer);
 
-                    console.log("1. Troubleshooting - Nominated Country:", currentCountry);
-                    console.log("2.Troubleshooting - Incorrect Answers:", incorrectAnswers);
-                    console.log("3. Troubleshooting - Correct Answer:", correctAnswer);
-                    console.log("4. Troubleshooting - Options Generated:", options);
+                    console.log("2. Troubleshooting - Nominated Country:", currentCountry);
+                    console.log("3.Troubleshooting - Incorrect Answers:", incorrectAnswers);
+                    console.log("4. Troubleshooting - Correct Answer:", correctAnswer);
+                    console.log("5. Troubleshooting - Options Generated:", options);
                 
                     // Add the correct country as an option
                     options.push(currentCountry);
@@ -253,7 +253,6 @@
                 // event listeners for continent buttons
                 document.addEventListener("DOMContentLoaded", () => {
                     const continentButtons = document.querySelectorAll<HTMLButtonElement>(".continents");
-                    const optionsButtons = document.querySelectorAll<HTMLButtonElement>(".option");
                 
                     continentButtons.forEach((button) => {
                         button.addEventListener("click", async (event) => {
@@ -272,7 +271,8 @@
                     });
                 
                     // event listeners for option buttons
-                    optionsButtons.forEach((button) => {
+                    const optionsButtons = document.querySelectorAll<HTMLButtonElement>(".option");
+                        optionsButtons.forEach((button) => {
                         button.addEventListener("click", (event) => {
                             const selectedOption = button.textContent;
                             if (selectedOption) {
@@ -297,7 +297,7 @@
                 const handleOptionClick = async (event: MouseEvent, selectedOption: string) => {
                     // Access properties of the event object if needed
                     const targetElement = event.target as HTMLButtonElement;
-                    console.log("Clicked element:", targetElement);
+                    console.log("6. Troubleshooting - Clicked country:", targetElement);
                 
                     // Your logic here using the selectedOption parameter
                     const currentCountry = countriesByContinent[currentCountryIndex];
