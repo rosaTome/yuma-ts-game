@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS/TS Game | Flags around the world quiz</title>
+    <script type="module" crossorigin src="./assets/index-zglOQGwh.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BRrm508g.css">
+  </head>
+
+  <body>
+
+    <section class="quiz-container">
+
+      <!-- NAV -->
+      <header class="nav-container">
+        <!-- <a href="./index.html" 
+        class="home-button"> 
+          <img src="./src/images/home-button.png" alt="home" class="home-button">
+        </a> -->
+        <a href="./index.html" class="home-button"> <!-- re-directs user to HOME -->
+          <!-- <img src="./src/images/home-button.jpg" alt="home" class="home-button"> -->
+        </a>
+        <div class="score-count"></div>
+      </header>
+
+      <!-- BACKGROUND -->
+      <div class="world-map-background-container">
+        <img src="./assets/world-map-DwBaBkRE.jpg" class="world-map-background"></img>
+      </div>
+
+      <!-- HOME -->
+      <div class="home-container">
+        <button class="continents africa">Africa</button>
+        <button class="continents america">Americas</button>
+        <button class="continents asia">Asia</button>
+        <button class="continents europe">Europe</button>
+        <button class="continents oceania">Oceania</button>
+      </div>
+
+      <!-- GAME -->
+      <div class="game-container" style="display: none;">
+
+        <div class="flag-container">
+          <img id="flag" src="" alt="flag"></img>
+        </div>
+
+        <button class="option">Option1</button>
+        <button class="option">Option2</button>
+        <button class="option">Option3</button>
+        <button class="option">Option4</button>
+
+      <!-- SCORE -->
+        <div id="score">Score: 0 / 0 </div>
+
+      </div>
+
+      <!-- MESSAGE -->
+      <div class="message"></div>
+
+    </section>
+
+    <div id="app"></div>
+  </body>
+</html>
