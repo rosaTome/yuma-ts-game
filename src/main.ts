@@ -268,7 +268,7 @@
                 });
 
                  // function to update the score display on the page
-                 const updateScoreDisplay = () => {
+                const updateScoreDisplay = () => {
                     const scoreElement = document.querySelector<HTMLDivElement>("#score");
                     if (scoreElement) {
                         scoreElement.textContent = `Score: ${score}/${totalCountries}`;
