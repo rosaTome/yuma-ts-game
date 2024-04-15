@@ -224,8 +224,6 @@
                 const generateQuiz = async (country: string) => {
                     try {
                         await displayCountryQuiz(country);
-                        const options = generateOptions(country);
-                        displayOptions(options);
                     } catch (error) {
                         console.error("Error generating quiz", error);
                     };
