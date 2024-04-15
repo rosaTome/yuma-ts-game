@@ -225,13 +225,9 @@
                     const optionsButtons = document.querySelectorAll<HTMLButtonElement>(".option");
                     optionsButtons.forEach((button, index) => {
                         button.textContent = options[index];
-                        button.disabled = false;
-
-                        // Remove existing event listeners before adding new ones
-                        button.removeEventListener("click", handleOptionClick);
+                        button.disabled = false; // Re-enable the button for the new quiz round
                         button.addEventListener("click", (event) => {
-                            handleOptionClick(event, options[index]);
-                            button.disabled = true; // Disable button after click
+                            handleOptionClick(event, options[index]); // Pass the event and selected option
                         });
                     });
                     updateScoreDisplay();
@@ -284,20 +280,32 @@
                 const handleOptionClick = async (event: MouseEvent, selectedOption: string) => {
                     // Access properties of the event object if needed
                     const targetElement = event.target as HTMLButtonElement;
-                    console.log("6. Troubleshooting - Clicked country:", targetElement);
+                    console.log("6. Troubleshooting - Clicked option:", selectedOption);
 
                     // Prevent multiple clicks by disabling the button
                     targetElement.disabled = true;
-                
-                    // Your logic here using the selectedOption parameter
+
+                    // Get the current country for this quiz round
                     const currentCountry = countriesByContinent[currentCountryIndex];
-                    if (currentCountry && selectedOption === currentCountry) {
+
+                    // Log the current country for debugging
+                    console.log("7. Troubleshooting - Confirmiation of Current Country:", currentCountry);
+
+                    // standard both selectedOption and currentCountry for comparison
+                    const normalisedSelectedOption = selectedOption.trim().toLowerCase();
+                    const normalisedCurrentCountry = currentCountry.trim().toLowerCase();
+
+                    // Log the normalised values for debugging
+                    console.log("8a. Troubleshoopting Normalised Selected Option:", normalisedSelectedOption);
+                    console.log("8b. Troubleshoopting Normalised Current Country:", normalisedCurrentCountry);
+
+                    // Check if  selectedOption matches the normalised currentCountry
+                    if (normalisedCurrentCountry === normalisedSelectedOption) {
                         score++;
-                        console.log("Troubleshooting 7a - CORRECT! Score added");
-                        
+                        console.log("9a. Troubleshooting  CORRECT! Score added");
                     } else {
                         // Handle incorrect answer logic
-                        console.log("Troubleshooting 7b. - INCORRECT!");
+                        console.log("9b. Troubleshooting  INCORRECT! Score stays the same");
                     }
                 
                     // Update the display of the score
