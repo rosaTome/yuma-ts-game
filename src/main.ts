@@ -56,10 +56,13 @@
                             throw new Error("No countries available for the selected continent");
                         };
 
+                        // set the total numbers of quiz rounds
+                        totalCountries = countriesByContinent.length;
+
                         // initialise the quiz with countries for the selected continent
                         initialiseQuizContinents(countriesByContinent);
 
-                        console.log(`QUIZ INITIATION - Countries in ${continent}:`, countriesByContinent);
+                        console.log(`startContinentQuiz - Countries in ${continent}:`, countriesByContinent);
                         
                     } catch (error) {
                         console.error("Error starting continent quiz:", error);
@@ -75,9 +78,6 @@
                    if (!countries || countries.length === 0) {
                        throw new Error("No countries available for the selected continent")
                    };
-
-                   // set the total number of quiz rounds
-                   totalCountries = countries.length;
 
                    // pick a random country from the provided array of countries 
                    const randomIndex = Math.floor(Math.random() * countries.length);
@@ -130,64 +130,58 @@
                         // fetch flag data for all countries 
                         const flagsData = await fetchFlagData();
 
+                        // find the flag data for the current country 
+                        const countryFlag = flagsData.find((country) => country.name.common === currentCountry);
+
                         // Ensure flagsData is an array
-                        if (!Array.isArray(flagsData)) {
+                        if (!countryFlag) {
                             throw new Error("Invalid flag data format");
-        }
-                        const currentCountryFlag = flagsData.find((country) => country.name.common === currentCountry);
-
-                        if (!currentCountryFlag) {
-                            throw new Error("Flag data not found for the current country");
                         }
+                        // Get the flag image URL for the current country
+                        const flagImageUrl = countryFlag.flags.png;
 
-                        // png flag url for the current country
-                        const flagImageUrl = currentCountryFlag.flags.png;
-
-                        // update the flag image in the html 
+                        // Update the flag image in the HTML
                         const flagImageElement = document.querySelector<HTMLImageElement>("#flag");
-
                         if (flagImageElement) {
                             flagImageElement.src = flagImageUrl;
                             flagImageElement.alt = currentCountry;
+                        } else {
+                            throw new Error("Flag image element not found in the HTML");
                         }
-
-                        // generate option for the current country
-                        const options = generateOptions(currentCountry, flagsData.length);
+                
+                        // Generate options for the current country and display them
+                        const options = generateOptions(currentCountry);
                         displayOptions(options);
-
+                
                     } catch (error) {
                         console.error("Error displaying country quiz:", error);
-                    }  
+                    }
                 };
-
                 // generate .option buttons with 3 random incorrect labels and 1 correct label matching the nominated country name from countriesByContinent object 
-                const generateOptions = (currentCountry: string, totalCountries: number): string [] => {
+                const generateOptions = (currentCountry: string): string[] => {
                     const options: string[] = [currentCountry]; //to include correct option
 
-                    // Ensure we can generate three unique incorrect options
-                    if (totalCountries <= 1) {
-                        throw new Error("Insufficient countries to generate options");
-                    };
+                    // generate incorrect options from the list of all countries 
+                    const allCountries = countriesByContinent.filter(country => country !== currentCountry);
 
                     // generate three random incorrect options from the list of all countries 
                     while (options.length < 4) {
-                        const randomIndex = Math.floor(Math.random() * totalCountries);
-
-                        if (randomIndex >= 0 && randomIndex < totalCountries && countriesByContinent[randomIndex]) {
-                            const randomCountry = countriesByContinent[randomIndex];
-
-
-                            if (!options.includes(randomCountry) && randomCountry !== currentCountry) {
-                                options.push(randomCountry);
-                            };
+                        const randomCountry = getRandomCountry(allCountries);
+                        if (!options.includes(randomCountry))  {
+                            options.push(randomCountry);
                         };
                     };
 
-                    console.log("Generated options:", options);
+                    console.log("generateOptions - Generated options are:", options);
 
                     // shuffle the options array to randomise order
                     return shuffleArray(options);
                 };
+
+                const getRandomCountry = (countries: string[]): string => {
+                    const randomIndex = Math.floor(Math.random() * countries.length);
+                    return countries[randomIndex];
+                }
 
                 // (Fisher-Yates shuffle algorithm)
                 const shuffleArray = <T>(array: T[]): T[] => {
@@ -207,33 +201,14 @@
                         console.log("generateQuiz - totalCountries:", totalCountries);
 
                         await displayCountryQuiz(country);
-                        updateScoreDisplay();
-                    
-                        } catch (error) {
-                            console.error("Error generating quiz", error);
-                        }
-                    }
-                    
-                    // REST OF GENERATE QUIZ FUNCTION - CUT OFF DUE TO BUG - move to the next quiz round 
-                    //     currentCountryIndex++
-                    //     if (currentCountryIndex < totalCountries) {
-                    //         const nextCountry = countriesByContinent[currentCountryIndex];
-                    //         generateQuiz(nextCountry);
-
-                    //     } else {
-                    //         // end of quiz
-                    //         const messageElement = document.querySelector<HTMLDivElement>(".message");
-                    //         if (messageElement) {
-                    //             const endMessage = `Quiz completed. Score: ${score}/${totalCountries}`;
-                    //             messageElement.textContent = endMessage;
-                    //         }
-                        
-                    //     } catch (error) {
-                    //         console.error("Error generating quiz", error);
-                    //    };
-                    
+                        const options = generateOptions(country);
+                        displayOptions(options)
             
-
+                    } catch (error) {
+                        console.error("Error generating quiz", error);
+                    }
+                };
+                    
                 // Function to display options on the screen 
                 const displayOptions = (options: string[]) => {
                     const optionsButtons = document.querySelectorAll<HTMLButtonElement>(".option");
@@ -244,7 +219,7 @@
 
                     optionsButtons.forEach((button, index) => {
                         button.textContent = options[index];
-                        button.addEventListener("click", () => { handleOptionClick(options[index]);
+                        button.addEventListener("click", () => {                handleOptionClick(options[index]);
                         });
                     });
                     updateScoreDisplay();
@@ -253,34 +228,28 @@
 
                 // event listeners for continent buttons
                 document.addEventListener("DOMContentLoaded", () => {
-                    const continentButtons = document.querySelectorAll(".continents");
+                    const continentButtons = document.querySelectorAll<HTMLButtonElement>(".continents");
+
+                    const optionsButtons = document.querySelectorAll<HTMLButtonElement>(".option");
+
                     continentButtons.forEach((button) => {
-                        button.addEventListener("click", (event) => {
+                        button.addEventListener("click", async (event) => {
 
                             // Check if event.target is an HTMLButtonElement
                             if (event.target instanceof HTMLButtonElement){
-
-                            const selectedContinent = event.target.textContent;
-
-                            if(selectedContinent) {
-                                startContinentQuiz(selectedContinent);
-
+                                const selectedContinent = event.target.textContent;
+                            if (selectedContinent) {
+                                await startContinentQuiz(selectedContinent);
+                                } else {
+                                    console.error("Issue with continent button")
+                                }
                             } else {
-                                console.error("Issue with continent button");
-                            }
-                        } else {
-
-                            console.error("Event target is not a button element");
+                                console.error("Event target is not a button element");
                             };
                         });
                     });
 
-                });
-                
-                // event listeners for option buttons
-                document.addEventListener("DOMContentLoaded", () => {
-                    const optionsButtons = document.querySelectorAll<HTMLButtonElement>(".option");
-                
+                    // event listeners for option buttons
                     optionsButtons.forEach((button) => {
                         button.addEventListener("click", () => {
                             const selectedOption = button.textContent;
@@ -289,51 +258,62 @@
                     });
                 });
 
-                const handleOptionClick = (selectedOption: string | null) => {
-                    console.log("Handling Option Click:", selectedOption); // check the selected option
-
-                    console.log("handleOptionClick - currentCountryIndex:", currentCountryIndex);
-                    console.log("handleOptionClick - totalCountries:", totalCountries);
-
-                    if (selectedOption !== null && selectedOption !== undefined) {
-                        const currentCountry = countriesByContinent[currentCountryIndex];
-
-                        if (selectedOption === currentCountry) {
-                            // correct answer
-                            score++;
-                        } 
-                        
-                        // move to the next quiz round 
-                        currentCountryIndex++;
-
-                        if (currentCountryIndex < totalCountries) {
-
-                            // generate next quiz round
-                            const nextCountry = countriesByContinent[currentCountryIndex];
-                            generateQuiz(nextCountry); // generate next quiz round
-
-                        } else {
-                            // end of quiz
-                            const messageElement = document.querySelector<HTMLDivElement>(".message");
-                            if (messageElement) {
-                                const endMessage = `Quiz completed. Score: ${score}/${totalCountries}`;
-                                messageElement.textContent = endMessage;
-                            };
-                        };
-
-                        // update the display of the score
-                        updateScoreDisplay();
-                    } else {
-                        console.error("Invalid selected option:", selectedOption);
-                    }
-                };
-
-                // function to update the score display on the page
-                const updateScoreDisplay = () => {
+                 // function to update the score display on the page
+                 const updateScoreDisplay = () => {
                     const scoreElement = document.querySelector<HTMLDivElement>("#score");
                     if (scoreElement) {
                         scoreElement.textContent = `Score: ${score}/${totalCountries}`;
                     } else {
                         console.error("Score element not found");
+                    }
+                };
+
+                const handleOptionClick = async (selectedOption: string | null) => {
+                    console.log("handleOptionClick - selectedOption is:", selectedOption);
+                
+                    if (selectedOption !== null && selectedOption !== undefined) {
+                        const currentCountry = countriesByContinent[currentCountryIndex];
+                
+                        if (currentCountry && selectedOption === currentCountry) {
+                            // Correct answer
+                            score++;
+                            console.log(`Correct answer! Score: ${score}`);
+                        } else {
+                            // Incorrect answer
+                            console.log("Incorrect answer");
+                            console.log(`The correct answer is: ${currentCountry}`);
+                        }
+                
+                        // Update the display of the score
+                        updateScoreDisplay();
+                
+                        // Check if there are more quiz rounds to play
+                        if (currentCountryIndex < totalCountries - 1) {
+                            // Wait for the user to click on any option button to proceed
+                            await new Promise<void>(resolve => {
+                                const optionsButtons = document.querySelectorAll<HTMLButtonElement>(".option");
+                                optionsButtons.forEach(button => {
+                                    button.addEventListener("click", async () => {
+                                        // Remove event listeners from all option buttons
+                                        optionsButtons.forEach(b => b.removeEventListener("click", () => {}));
+                                        
+                                        // Move to the next country
+                                        currentCountryIndex++;
+                                        const nextCountry = countriesByContinent[currentCountryIndex];
+                                        await generateQuiz(nextCountry); // Generate the next quiz round
+                                        resolve(); // Resolve the promise to continue
+                                    }, { once: true }); // Use { once: true } to ensure each button click triggers only once
+                                });
+                            });
+                        } else {
+                            // End of quiz
+                            const messageElement = document.querySelector<HTMLDivElement>(".message");
+                            if (messageElement) {
+                                const endMessage = `Quiz completed. Score: ${score}/${totalCountries}`;
+                                messageElement.textContent = endMessage;
+                            }
+                        }
+                    } else {
+                        console.error("Invalid selected option:", selectedOption);
                     }
                 };
