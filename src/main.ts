@@ -168,6 +168,7 @@
                 };
                 // generate .option buttons with 3 random incorrect labels and 1 correct label matching the nominated country name from countriesByContinent object 
                 const generateOptions = (currentCountry: string): string[] => {
+                    
                     const options: string[] = [];
                 
                     // Ensure countriesByContinent is not empty and contains currentCountry
@@ -187,6 +188,14 @@
                             options.push(randomCountry);
                         }
                     }
+
+                    const correctAnswer = currentCountry;
+                    const incorrectAnswers = options.filter(option => option !== correctAnswer);
+
+                    console.log("1. Troubleshooting - Nominated Country:", currentCountry);
+                    console.log("2.Troubleshooting - Incorrect Answers:", incorrectAnswers);
+                    console.log("3. Troubleshooting - Correct Answer:", correctAnswer);
+                    console.log("4. Troubleshooting - Options Generated:", options);
                 
                     // Add the correct country as an option
                     options.push(currentCountry);
@@ -225,48 +234,52 @@
                 // Function to display options on the screen 
                 const displayOptions = (options: string[]) => {
                     const optionsButtons = document.querySelectorAll<HTMLButtonElement>(".option");
-
+                
                     if (optionsButtons.length !== options.length) {
                         throw new Error("Number of option buttons does not match the number of options.");
                     }
-
+                
+                    // Attach event listener to each option button
                     optionsButtons.forEach((button, index) => {
                         button.textContent = options[index];
-                        button.addEventListener("click", () => {                handleOptionClick(options[index]);
+                        button.addEventListener("click", (event) => {
+                            handleOptionClick(event, options[index]); // Pass the event and selected option
                         });
                     });
+                
                     updateScoreDisplay();
                 };
-                
 
                 // event listeners for continent buttons
                 document.addEventListener("DOMContentLoaded", () => {
                     const continentButtons = document.querySelectorAll<HTMLButtonElement>(".continents");
-
                     const optionsButtons = document.querySelectorAll<HTMLButtonElement>(".option");
-
+                
                     continentButtons.forEach((button) => {
                         button.addEventListener("click", async (event) => {
-
                             // Check if event.target is an HTMLButtonElement
                             if (event.target instanceof HTMLButtonElement){
                                 const selectedContinent = event.target.textContent;
-                            if (selectedContinent) {
-                                await startContinentQuiz(selectedContinent);
+                                if (selectedContinent) {
+                                    await startContinentQuiz(selectedContinent);
                                 } else {
-                                    console.error("Issue with continent button")
+                                    console.error("Issue with continent button");
                                 }
                             } else {
                                 console.error("Event target is not a button element");
-                            };
+                            }
                         });
                     });
-
+                
                     // event listeners for option buttons
                     optionsButtons.forEach((button) => {
-                        button.addEventListener("click", () => {
+                        button.addEventListener("click", (event) => {
                             const selectedOption = button.textContent;
-                            handleOptionClick(selectedOption);
+                            if (selectedOption) {
+                                handleOptionClick(event, selectedOption); // Pass event and selectedOption
+                            } else {
+                                console.error("Selected option is invalid");
+                            }
                         });
                     });
                 });
@@ -281,34 +294,33 @@
                     };
                 };
 
-                const handleOptionClick = async (selectedOption: string | null) => {
-                    if (selectedOption !== null && selectedOption !== undefined) {
-                        const currentCountry = countriesByContinent[currentCountryIndex];
+                const handleOptionClick = async (event: MouseEvent, selectedOption: string) => {
+                    // Access properties of the event object if needed
+                    const targetElement = event.target as HTMLButtonElement;
+                    console.log("Clicked element:", targetElement);
                 
-                        if (currentCountry && selectedOption === currentCountry) {
-                            score++;
-                            console.log(`Correct answer! Score: ${score}`);
-                        } else {
-                            console.log("Incorrect answer");
-                            console.log(`The correct answer is: ${currentCountry}`);
-                        }
-                
-                        updateScoreDisplay();
-                
-                        // Move to the next quiz round
-                        currentCountryIndex++;
-                        if (currentCountryIndex < totalCountries) {
-                            const nextCountry = countriesByContinent[currentCountryIndex];
-                            await generateQuiz(nextCountry);
-                        } else {
-                            // End of quiz
-                            const messageElement = document.querySelector<HTMLDivElement>(".message");
-                            if (messageElement) {
-                                const endMessage = `Quiz completed. Score: ${score}/${totalCountries}`;
-                                messageElement.textContent = endMessage;
-                            }
-                        }
+                    // Your logic here using the selectedOption parameter
+                    const currentCountry = countriesByContinent[currentCountryIndex];
+                    if (currentCountry && selectedOption === currentCountry) {
+                        score++;
                     } else {
-                        console.error("Invalid selected option:", selectedOption);
+                        // Handle incorrect answer logic
+                    }
+                
+                    // Update the display of the score
+                    updateScoreDisplay();
+                
+                    // Move to the next quiz round if applicable
+                    currentCountryIndex++;
+                    if (currentCountryIndex < totalCountries) {
+                        const nextCountry = countriesByContinent[currentCountryIndex];
+                        await generateQuiz(nextCountry);
+                    } else {
+                        // End of quiz logic
+                        const messageElement = document.querySelector<HTMLDivElement>(".message");
+                        if (messageElement) {
+                            const endMessage = `Quiz completed. Score: ${score}/${totalCountries}`;
+                            messageElement.textContent = endMessage;
+                        }
                     }
                 };
