@@ -170,33 +170,24 @@
                 const generateOptions = (currentCountry: string): string[] => {
                     
                     const options: string[] = [];
-                
-                    // Ensure countriesByContinent is not empty and contains currentCountry
-                    if (!countriesByContinent.includes(currentCountry)) {
-                        throw new Error(`Invalid currentCountry: ${currentCountry}`);
-                    }
-                
-                    // Filter out the correct country from the list
                     const allCountriesExceptCurrent = countriesByContinent.filter(country => country !== currentCountry);
-                
-                    // Choose three random incorrect options
+
                     while (options.length < 3) {
                         const randomIndex = Math.floor(Math.random() * allCountriesExceptCurrent.length);
                         const randomCountry = allCountriesExceptCurrent[randomIndex];
-                
+
                         if (!options.includes(randomCountry)) {
                             options.push(randomCountry);
                         }
                     }
-
                     const correctAnswer = currentCountry;
                     const incorrectAnswers = options.filter(option => option !== correctAnswer);
 
                     console.log("2. Troubleshooting - Nominated Country:", currentCountry);
-                    console.log("3.Troubleshooting - Incorrect Answers:", incorrectAnswers);
-                    console.log("4. Troubleshooting - Correct Answer:", correctAnswer);
-                    console.log("5. Troubleshooting - Options Generated:", options);
-                
+                    console.log("3. Troubleshooting - Options Generated:", options);
+                    console.log("4.Troubleshooting - Incorrect Answers:", incorrectAnswers);
+                    console.log("5. Troubleshooting - Correct Answer:", correctAnswer);
+                   
                     // Add the correct country as an option
                     options.push(currentCountry);
                 
